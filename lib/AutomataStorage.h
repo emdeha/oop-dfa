@@ -1,6 +1,7 @@
 #pragma once
 
 #include <map>
+#include <vector>
 #include <memory>
 
 
@@ -15,12 +16,11 @@ class AutomataStorage {
     std::map<size_t, std::shared_ptr<Automaton>> automatons;
     size_t currentIdentifier;
 
-  public:
-    void List() const;
-
-    // TODO: Make private once you've implemented loading from file
     size_t Add(std::shared_ptr<Automaton> automatonToAdd);
-    const std::shared_ptr<Automaton> Retrieve(size_t idToRetrieve) const;
+    std::shared_ptr<const Automaton> Retrieve(size_t idToRetrieve) const;
 
-    void PrintAll() const;
+  public:
+		// TODO: Use a const_iterator view to retrieve the automata and prevent
+		// the user from modifying them
+		std::map<size_t, std::shared_ptr<Automaton>> List() const;
 };

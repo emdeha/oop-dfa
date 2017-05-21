@@ -15,7 +15,7 @@ size_t AutomataStorage::Add(std::shared_ptr<Automaton> automatonToAdd) {
   return currentIdentifier;
 }
 
-const std::shared_ptr<Automaton> AutomataStorage::Retrieve(size_t idToRetrieve) const {
+std::shared_ptr<const Automaton> AutomataStorage::Retrieve(size_t idToRetrieve) const {
   auto automatonIter = automatons.find(idToRetrieve);
   if (automatonIter != automatons.end()) {
     return automatonIter->second;
@@ -23,8 +23,6 @@ const std::shared_ptr<Automaton> AutomataStorage::Retrieve(size_t idToRetrieve) 
   return nullptr;
 }
 
-void AutomataStorage::PrintAll() const {
-  for (auto a : automatons) {
-    a.second->Print();
-  }
+std::map<size_t, std::shared_ptr<Automaton>> AutomataStorage::List() const {
+	return automatons;
 }

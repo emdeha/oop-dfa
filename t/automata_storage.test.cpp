@@ -29,5 +29,12 @@ int main() {
 	okay(as.Retrieve(0) == nullptr, "No automaton at identifier 0");
 	okay(as.Retrieve(5) == nullptr, "No automaton after storage boundaries");
 
+	std::cout << "  Listing all automatons\n";
+	auto automatons = as.List();
+	okay(automatons.size() == 2, "Has two automatons");
+	okay(automatons[1]->testIdentifier == 1, "First automaton has identifier 1");
+	okay(automatons[2]->testIdentifier == 2, "Second automaton has identifier 2");
+	okay(automatons[3] == nullptr, "Has no third automaton");
+
   return 0;
 }
