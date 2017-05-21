@@ -23,6 +23,10 @@ std::shared_ptr<const Automaton> AutomataStorage::Retrieve(size_t idToRetrieve) 
   return nullptr;
 }
 
-std::map<size_t, std::shared_ptr<Automaton>> AutomataStorage::List() const {
-	return automatons;
+std::vector<size_t> AutomataStorage::List() const {
+	std::vector<size_t> automataIndexes;
+	for (auto a : automatons) {
+		automataIndexes.push_back(a.first);
+	}
+	return automataIndexes;
 }

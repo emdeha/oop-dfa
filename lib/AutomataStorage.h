@@ -20,7 +20,5 @@ class AutomataStorage {
     std::shared_ptr<const Automaton> Retrieve(size_t idToRetrieve) const;
 
   public:
-		// TODO: Use a const_iterator view to retrieve the automata and prevent
-		// the user from modifying them
-		std::map<size_t, std::shared_ptr<Automaton>> List() const;
+		std::vector<size_t> List() const;
 };

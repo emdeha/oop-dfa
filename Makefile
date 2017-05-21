@@ -6,4 +6,4 @@ main: main.cpp ./lib/Automaton.h ./lib/AutomataStorage.h
 		./lib/Automaton.cpp ./lib/AutomataStorage.cpp
 
 clean:
-	rm -f main.out t/*.test.out
+	rm -f main.out t/**/*.test.out

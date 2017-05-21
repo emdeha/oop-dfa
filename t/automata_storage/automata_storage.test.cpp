@@ -25,9 +25,8 @@ int main() {
 	std::cout << "  Listing all automatons\n";
 	auto automatons = as.List();
 	T::okay(automatons.size() == 2, "Has two automatons");
-	T::okay(automatons[1]->testIdentifier == 1, "First automaton has identifier 1");
-	T::okay(automatons[2]->testIdentifier == 2, "Second automaton has identifier 2");
-	T::okay(automatons[3] == nullptr, "Has no third automaton");
+	T::okay(automatons[0] == 1, "First automaton has identifier 1");
+	T::okay(automatons[1] == 2, "Second automaton has identifier 2");
 
   return 0;
 }
