@@ -4,5 +4,5 @@
 
 
 void Automaton::Print() {
-  std::cout << "Hello from automaton\n";
+  std::cout << "Hello from automaton: " << testIdentifier << "\n";
 }
