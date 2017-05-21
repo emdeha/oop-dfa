@@ -7,7 +7,11 @@
 class Automaton;
 
 class AutomataStorage {
+#ifndef DFA_TESTING
   private:
+#else
+	public:
+#endif
     std::map<size_t, std::shared_ptr<Automaton>> automatons;
     size_t currentIdentifier;
 
