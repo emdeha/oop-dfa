@@ -6,13 +6,13 @@
 
 
 int main() {
-	std::cout << "Testing automaton serialization\n";
+  std::cout << "Testing automaton serialization\n";
 
-	std::cout << "  Creation from serial string\n";
+  std::cout << "  Creation from serial string\n";
 
-	std::cout << "  Saving to serial string\n";
+  std::cout << "  Saving to serial string\n";
 
-	std::cout << "  Displaying a human-readable string\n";
+  std::cout << "  Displaying a human-readable string\n";
 
   return 0;
 }

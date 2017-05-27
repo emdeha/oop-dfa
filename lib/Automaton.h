@@ -4,7 +4,7 @@ class Automaton {
 #ifndef DFA_TESTING
   private:
 #else
-	public:
+  public:
 #endif
     int testIdentifier;
 
