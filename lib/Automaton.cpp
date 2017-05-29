@@ -24,7 +24,8 @@ bool Automaton::IsDeterministic()  const {
   return next->IsDeterministic();
 }
 
-bool Automaton::Recognize() const {
+bool Automaton::Recognize(std::string word) const {
+  word = "";
   return false;
 }
 
