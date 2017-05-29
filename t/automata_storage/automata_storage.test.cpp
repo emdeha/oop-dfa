@@ -12,9 +12,9 @@ int main() {
   std::cout << "  Incrementing current identifier\n";
   AutomataStorage as = AutomataStorage();
   T::okay(as.currentIdentifier == 0, "Identifier is 0 at the beginning");
-  as.Add(std::make_shared<Automaton>(Automaton(1)));
+  as.Add(std::make_shared<Automaton>());
   T::okay(as.currentIdentifier == 1, "Identifier is 1 after adding one element");
-  as.Add(std::make_shared<Automaton>(Automaton(2)));
+  as.Add(std::make_shared<Automaton>());
   T::okay(as.currentIdentifier == 2, "Identifier is 2 after adding a second element");
 
   std::cout << "  Retrieving automaton\n";

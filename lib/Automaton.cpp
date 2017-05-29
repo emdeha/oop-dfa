@@ -1,8 +1,9 @@
 #include "./Automaton.h"
 
 #include <iostream>
+#include <string>
 
 
-void Automaton::Print() {
-  std::cout << "Hello from automaton: " << testIdentifier << "\n";
+bool Automaton::IsEmpty() const {
+  return type == Empty;
 }

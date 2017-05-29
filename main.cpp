@@ -1,6 +1,7 @@
 // #define NDEBUG
 #include <iostream>
 #include <memory>
+#include <string>
 
 #include "lib/Automaton.h"
 #include "lib/AutomataStorage.h"

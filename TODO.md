@@ -3,12 +3,22 @@
 	- Structure
 	```c++
 	class Automaton {
-	  enum type = { Character, Match, Split };
+	  enum type = { Character, Match, Split, Empty };
 		char symbol;
 		std::shared_ptr<Automaton> next;
 		std::shared_ptr<Automaton> nextSplit;
 	};
 	```
+
+  - Grammar
+  ```
+  automaton ::= '(' (<split> | <character> | <match> | <empty>) ')'
+  split ::= "Split" <automaton> <automaton>
+  character ::= "Character" <char> <automaton>
+  match ::= "Match"
+  empty ::= "Empty"
+  char ::= [a-z0-9]
+  ```
 
 2. Implement basic automaton methods
 	2.1. Public
