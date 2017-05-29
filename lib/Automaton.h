@@ -7,6 +7,10 @@ enum AutomatonType {
   Character, Split, Match, Empty 
 };
 
+/*
+ * The following automaton data structure realization is largely influenced by
+ * https://swtch.com/~rsc/regexp/regexp1.html
+ */
 class Automaton {
 #ifndef DFA_TESTING
   private:
@@ -34,7 +38,10 @@ class Automaton {
     AutomatonPair ParseSplit(std::string, int);
 
   public:
-    Automaton() {}
+    Automaton()
+      : type(Empty), symbol('\0'), next(nullptr), nextSplit(nullptr) {}
+    Automaton(AutomatonType _type, char _symbol)
+      : type(_type), symbol(_symbol), next(nullptr), nextSplit(nullptr) {}
 
     std::string ToSerial() const;
     void FromSerial(std::string);
