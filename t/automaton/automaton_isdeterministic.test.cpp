@@ -10,9 +10,7 @@ void TestWordAB() {
    * An automaton which recognizes the word "ab"
    * (Character 'a', (Character 'b' (Match)))
    */
-  Automaton a;
-  a.type = Character;
-  a.symbol = 'a';
+  Automaton a(Character, 'a');
   a.next = std::make_shared<Automaton>(Character, 'b');
   a.next->next = std::make_shared<Automaton>(Match, '\0');
   T::okay(a.IsDeterministic() == true,

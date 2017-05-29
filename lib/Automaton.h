@@ -7,6 +7,10 @@ enum AutomatonType {
   Character, Split, Match, Empty 
 };
 
+class Automaton;
+typedef std::shared_ptr<Automaton> AutomatonPtr;
+typedef std::pair<AutomatonPtr, AutomatonPtr> AutomatonPair;
+
 /*
  * The following automaton data structure realization is largely influenced by
  * https://swtch.com/~rsc/regexp/regexp1.html
@@ -17,8 +21,6 @@ class Automaton {
 #else
   public:
 #endif
-    typedef std::shared_ptr<Automaton> AutomatonPtr;
-    typedef std::pair<AutomatonPtr, AutomatonPtr> AutomatonPair;
     AutomatonType type;
     char symbol;
     std::shared_ptr<Automaton> next;
@@ -48,4 +50,6 @@ class Automaton {
 
     bool IsEmpty() const;
     bool IsDeterministic() const;
+
+    bool Recognize(std::string word) const;
 };
