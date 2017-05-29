@@ -6,10 +6,10 @@
 
 
 void TestRecognizeEmptyWord() {
-  Automaton a(Empty, '\0');
+  Automaton a(Match, '\0');
   T::okay(a.Recognize("") == true,
       "Recognizes the lonely empty word");
-  T::okay(a.Recognize("\0abc") == true,
+  T::okay(a.Recognize("abc") == true,
       "Recognizes the empty word with trailing letters");
 }
 

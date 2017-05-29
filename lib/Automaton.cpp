@@ -25,8 +25,16 @@ bool Automaton::IsDeterministic()  const {
 }
 
 bool Automaton::Recognize(std::string word) const {
-  word = "";
-  return false;
+  auto next = this;
+  switch (next->type) {
+    case Match: return true;
+    case Empty: return false;
+    case Character:
+      return word[0] == symbol ? next->next->Recognize(word.substr(1))
+                               : false;
+    case Split: return false;
+    default: return false;
+  }
 }
 
 std::string Automaton::ToSerial() const {
