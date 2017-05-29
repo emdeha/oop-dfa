@@ -23,3 +23,42 @@ bool Automaton::IsDeterministic()  const {
 
   return next->IsDeterministic();
 }
+
+std::string Automaton::ToSerial() const {
+  std::string serial = "(";
+
+  switch (type) {
+    case Character:
+      serial += "Character '";
+      serial += symbol;
+      serial += "' ";
+      if (next) {
+        serial += next->ToSerial();
+      }
+      break;
+    case Split:
+      if (!next) {
+        serial += "Split ()";
+      } else {
+        serial += "Split ";
+        serial += next->ToSerial();
+        serial += " ";
+      }
+
+      if (!nextSplit) {
+        serial += "()";
+      } else {
+        serial += nextSplit->ToSerial();
+      }
+      break;
+    case Match:
+      serial += "Match";
+      break;
+    case Empty:
+      serial += "Empty";
+      break;
+  }
+
+  serial += ")";
+  return serial;
+}
