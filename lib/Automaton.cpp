@@ -24,6 +24,10 @@ bool Automaton::IsDeterministic()  const {
   return next->IsDeterministic();
 }
 
+bool Automaton::Recognize() const {
+  return false;
+}
+
 std::string Automaton::ToSerial() const {
   std::string serial = "(";
 
