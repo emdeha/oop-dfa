@@ -28,8 +28,14 @@ bool Automaton::Recognize(std::string word) const {
   auto next = this;
   switch (next->type) {
     case Match: return true;
-    case Empty: return false;
+    case Empty: 
+      while (next && next->type == Empty) {
+        next = next->next.get();
+      }
+      if (!next) { return false; }
+      return next->Recognize(word);
     case Character:
+      if (!next->next) { return false; }
       return word[0] == symbol ? next->next->Recognize(word.substr(1))
                                : false;
     case Split: return false;
