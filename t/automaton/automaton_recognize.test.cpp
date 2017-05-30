@@ -9,8 +9,6 @@ void TestRecognizeEmptyWord() {
   Automaton a(Match, '\0');
   T::okay(a.Recognize("") == true,
       "Recognizes the lonely empty word");
-  T::okay(a.Recognize("abc") == true,
-      "Recognizes the empty word with trailing letters");
 }
 
 void TestRecognizeNoSplitWords() {
@@ -42,7 +40,7 @@ void TestRecognizeOneLevelSplitWords() {
   lastA->next = std::make_shared<Automaton>(Match, '\0');
   a.next->next->next = lastA;
   a.next->nextSplit->next = lastA;
-  T::okay(a.Recognize("abb") == true,
+  T::okay(a.Recognize("aab") == true,
       "Recognizes first alternation");
   T::okay(a.Recognize("acb") == true,
       "Recognizes second alternation");
@@ -70,8 +68,8 @@ void TestRecognizeMultiLevelSplitWords() {
   auto lastA = std::make_shared<Automaton>(Character, 'd');
   lastA->next = std::make_shared<Automaton>(Match, '\0');
   a.next->next->next->next = lastA;
-  a.next->nextSplit->next = lastA;
-  a.next->nextSplit->nextSplit = lastA;
+  a.next->nextSplit->next->next = lastA;
+  a.next->nextSplit->nextSplit->next = lastA;
   T::okay(a.Recognize("aabd") == true,
       "Recognizes first alternative");
   T::okay(a.Recognize("acd") == true,
@@ -98,11 +96,15 @@ void TestRecognizeMultipleSplitWords() {
   halfA->next = std::make_shared<Automaton>(Character, 'd');
   halfA->next->next = std::make_shared<Automaton>(Split, '\0');
   halfA->next->next->next = std::make_shared<Automaton>(Character, 'e');
+  halfA->next->next->next->next = std::make_shared<Automaton>(Match, '\0');
   halfA->next->next->nextSplit = std::make_shared<Automaton>(Split, '\0');
   halfA->next->next->nextSplit->next = std::make_shared<Automaton>(Character, 'f');
+  halfA->next->next->nextSplit->next->next = std::make_shared<Automaton>(Match, '\0');
   halfA->next->next->nextSplit->nextSplit = std::make_shared<Automaton>(Character, 'd');
+  halfA->next->next->nextSplit->nextSplit->next = std::make_shared<Automaton>(Match, '\0');
   a.next->next->next = halfA;
   a.next->next->nextSplit = halfA;
+  a.next->nextSplit->next = a.next->next->next;
   T::okay(a.Recognize("aacde") == true,
       "Recognizes first alternation");
   T::okay(a.Recognize("abcde") == true,

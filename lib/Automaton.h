@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <vector>
 
 
 enum AutomatonType {
@@ -8,8 +9,11 @@ enum AutomatonType {
 };
 
 class Automaton;
+// TODO: Consider using weak_ptr because of possible circular deps
 typedef std::shared_ptr<Automaton> AutomatonPtr;
+typedef std::shared_ptr<const Automaton> AutomatonConstPtr;
 typedef std::pair<AutomatonPtr, AutomatonPtr> AutomatonPair;
+typedef std::vector<AutomatonConstPtr> StatesList;
 
 /*
  * The following automaton data structure realization is largely influenced by
@@ -23,8 +27,8 @@ class Automaton {
 #endif
     AutomatonType type;
     char symbol;
-    std::shared_ptr<Automaton> next;
-    std::shared_ptr<Automaton> nextSplit;
+    AutomatonPtr next;
+    AutomatonPtr nextSplit;
 
     /*
      * We use an S-expression grammar to store the Automaton.
@@ -37,6 +41,12 @@ class Automaton {
     void Parse(std::string, int);
     AutomatonPtr ParseCharacter(std::string, int);
     AutomatonPair ParseSplit(std::string, int);
+
+    // These lists are used by the matching algorithm
+    mutable StatesList currentStates;
+    mutable StatesList nextStates;
+
+    void AddState(AutomatonConstPtr, StatesList&) const;
 
   public:
     Automaton()

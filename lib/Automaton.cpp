@@ -2,6 +2,8 @@
 
 #include <iostream>
 #include <string>
+#include <vector>
+#include <algorithm>
 
 
 /*
@@ -37,17 +39,42 @@ bool Automaton::IsDeterministic()  const {
   return next->IsDeterministic();
 }
 
-bool Automaton::Recognize(std::string word) const {
-  auto next = this;
-  switch (next->type) {
-    case Match: return true;
-    case Character:
-      if (!next->next) { return false; }
-      return word[0] == symbol ? next->next->Recognize(word.substr(1))
-                               : false;
-    case Split: return false;
-    default: return false;
+void Automaton::AddState(AutomatonConstPtr state, StatesList &list) const {
+  if (!state ||
+      // Don't put duplicate states
+      std::find_if(list.begin(), list.end(), 
+        [state](AutomatonConstPtr const &p){ return p.get() == state.get(); }) != std::end(list)) {
+    return;
   }
+
+  if (state->type == Split) {
+    AddState(state->next, list);
+    AddState(state->nextSplit, list);
+    return;
+  }
+
+  list.push_back(state);
+}
+
+bool Automaton::Recognize(std::string word) const {
+  AddState(std::make_shared<Automaton>(*this), currentStates);
+
+  for (char &c: word) {
+    for (auto state: currentStates) {
+      if (state->type == Character && state->symbol == c) {
+        AddState(state->next, nextStates);
+      }
+    }
+    currentStates.swap(nextStates);
+    nextStates.clear();
+  }
+
+  for (auto state: currentStates) {
+    if (state->type == Match) {
+      return true;
+    }
+  }
+  return false;
 }
 
 std::string Automaton::ToSerial() const {
