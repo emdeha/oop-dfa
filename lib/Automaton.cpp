@@ -43,8 +43,7 @@ void Automaton::AddState(AutomatonConstPtr state, StatesList &list) const {
   // TODO: Optimize check for whether the state was already added
   if (!state ||
       // Don't put duplicate states
-      std::find_if(list.begin(), list.end(), 
-        [state](AutomatonConstPtr const &p){ return p.get() == state.get(); }) != std::end(list)) {
+      std::find(list.begin(), list.end(), state) != list.end()) {
     return;
   }
 
