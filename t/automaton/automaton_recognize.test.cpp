@@ -21,7 +21,7 @@ void TestRecognizeNoSplitWords() {
   a.next->next->next->next = std::make_shared<Automaton>(Match, '\0');
   T::okay(a.Recognize("abcd") == true,
       "Recognizes word with Match at the end");
-  T::okay(a.Recognize("ab") == true,
+  T::okay(a.Recognize("ab") == false,
       "Doesn't recognize half-word");
   T::okay(a.Recognize("") == false,
       "Doesn't recognize the empty word");
@@ -44,9 +44,9 @@ void TestRecognizeOneLevelSplitWords() {
       "Recognizes first alternation");
   T::okay(a.Recognize("acb") == true,
       "Recognizes second alternation");
-  T::okay(a.Recognize("ac") == true,
+  T::okay(a.Recognize("ac") == false,
       "Doesn't recognize only first two characters");
-  T::okay(a.Recognize("ab") == true,
+  T::okay(a.Recognize("ab") == false,
       "Doesn't recognize first and last character only");
   T::okay(a.Recognize("") == false,
       "Doesn't recognize the empty word");
