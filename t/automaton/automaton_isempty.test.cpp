@@ -9,14 +9,14 @@ int main() {
   std::cout << "Testing IsEmpty on automaton\n";
 
   Automaton a;
-  a.type = Empty;
-  T::okay(a.IsEmpty() == true, "Automaton of type Empty should be empty");
+  a.type = Match;
+  T::okay(a.IsEmpty() == true, "Automaton of type Match should be empty");
   a.next = std::make_shared<Automaton>();
   T::okay(a.IsEmpty() == true,
-      "Automaton of type Empty should be empty regardless of other data");
+      "Automaton of type Match should be empty regardless of other data");
   a.type = Character;
   T::okay(a.IsEmpty() == false,
-      "Automaton of other type than Empty is not empty");
+      "Automaton of other type than Match is not empty");
 
   return 0;
 }

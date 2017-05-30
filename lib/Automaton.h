@@ -4,7 +4,7 @@
 
 
 enum AutomatonType {
-  Character, Split, Match, Empty 
+  Character, Split, Match
 };
 
 class Automaton;
@@ -28,12 +28,11 @@ class Automaton {
 
     /*
      * We use an S-expression grammar to store the Automaton.
-     * automaton ::= '(' <character> | <split> | <match> | <empty> ')'
+     * automaton ::= '(' <character> | <split> | <match> ')'
      * character ::= "Character" <char> <automaton>
      * char ::= [a-z0-9]
      * split ::= "Split" <automaton> <automaton>
      * match ::= "Match"
-     * empty ::= "Empty"
      */
     void Parse(std::string, int);
     AutomatonPtr ParseCharacter(std::string, int);
@@ -41,7 +40,7 @@ class Automaton {
 
   public:
     Automaton()
-      : type(Empty), symbol('\0'), next(nullptr), nextSplit(nullptr) {}
+      : type(Match), symbol('\0'), next(nullptr), nextSplit(nullptr) {}
     Automaton(AutomatonType _type, char _symbol)
       : type(_type), symbol(_symbol), next(nullptr), nextSplit(nullptr) {}
 

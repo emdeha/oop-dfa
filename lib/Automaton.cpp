@@ -4,14 +4,27 @@
 #include <string>
 
 
+/*
+ * An automaton's language is empty if the automaton only recognizes the empty
+ * word.
+ * This can happen when either there's a single Match node, or there are only
+ * Split nodes because they represent epsilon-transitions.
+ */
+// TODO: Track whether there's a cycle in the automaton
 bool Automaton::IsEmpty() const {
-  return type == Empty;
+  if (type == Match) { return true; }
+  if (type == Split) {
+    return next->IsEmpty() && nextSplit->IsEmpty();
+  }
+
+  return false;
 }
 
 /*
  * The current data structure represents an automaton which is always
  * non-deterministic if it has a Split node.
  */
+// TODO: Track whether there's a cycle in the automaton
 bool Automaton::IsDeterministic()  const {
   if (next == nullptr) {
     return true;
@@ -28,12 +41,6 @@ bool Automaton::Recognize(std::string word) const {
   auto next = this;
   switch (next->type) {
     case Match: return true;
-    case Empty: 
-      while (next && next->type == Empty) {
-        next = next->next.get();
-      }
-      if (!next) { return false; }
-      return next->Recognize(word);
     case Character:
       if (!next->next) { return false; }
       return word[0] == symbol ? next->next->Recognize(word.substr(1))
@@ -72,9 +79,6 @@ std::string Automaton::ToSerial() const {
       break;
     case Match:
       serial += "Match";
-      break;
-    case Empty:
-      serial += "Empty";
       break;
   }
 

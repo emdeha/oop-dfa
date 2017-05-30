@@ -24,9 +24,9 @@ void TestWordWithEmpty() {
    */
   Automaton a(Character, 'a');
   a.next = std::make_shared<Automaton>(Character, 'b');
-  a.next->next = std::make_shared<Automaton>(Empty, '\0');
+  a.next->next = std::make_shared<Automaton>(Match, '\0');
   T::okay(a.IsDeterministic() == true,
-      "Automaton which ends with the Empty automaton is deterministic");
+      "Automaton which ends with the Match automaton is deterministic");
 }
 
 void TestWordWithSplit() {

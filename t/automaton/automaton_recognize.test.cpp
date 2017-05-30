@@ -23,13 +23,6 @@ void TestRecognizeNoSplitWords() {
   a.next->next->next->next = std::make_shared<Automaton>(Match, '\0');
   T::okay(a.Recognize("abcd") == true,
       "Recognizes word with Match at the end");
-  a.next->next->next->next = std::make_shared<Automaton>(Empty, '\0');
-  T::okay(a.Recognize("abcd") == false,
-      "Doesn't recognize word with Empty at the end");
-  a.next->next->next->next->next = std::make_shared<Automaton>(Empty, '\0');
-  a.next->next->next->next->next->next = std::make_shared<Automaton>(Match, '\0');
-  T::okay(a.Recognize("abcd") == true,
-      "Recognizes word with Empty before the Match");
   T::okay(a.Recognize("ab") == true,
       "Doesn't recognize half-word");
   T::okay(a.Recognize("") == false,
