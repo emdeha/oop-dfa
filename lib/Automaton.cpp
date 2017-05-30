@@ -40,6 +40,7 @@ bool Automaton::IsDeterministic()  const {
 }
 
 void Automaton::AddState(AutomatonConstPtr state, StatesList &list) const {
+  // TODO: Optimize check for whether the state was already added
   if (!state ||
       // Don't put duplicate states
       std::find_if(list.begin(), list.end(), 
@@ -84,8 +85,9 @@ std::string Automaton::ToSerial() const {
     case Character:
       serial += "Character '";
       serial += symbol;
-      serial += "' ";
+      serial += "'";
       if (next) {
+        serial += " ";
         serial += next->ToSerial();
       }
       break;
