@@ -92,7 +92,7 @@ std::string Automaton::ToSerial() const {
       break;
     case Split:
       if (!next) {
-        serial += "Split ()";
+        serial += "Split () ";
       } else {
         serial += "Split ";
         serial += next->ToSerial();
