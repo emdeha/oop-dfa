@@ -38,9 +38,7 @@ void TestSerializingASplitAutomaton() {
   a.next->next->next = std::make_shared<Automaton>(Match, '\0');
   a.next->nextSplit = std::make_shared<Automaton>(Character, 'c');
   a.next->nextSplit->next = std::make_shared<Automaton>(Match, '\0');
-  T::okay(a.ToString() == "(Character 'a' "
-                          "(Split (Character 'b' (Match)) (Character 'c' (Match))))",
-      "Serializes a simple split");
+  T::okay(SerializationOK(a), "Serializes a simple split");
 
   // Recongnizes "a(a|b)cd(e|(f|d))"
   Automaton b(Character, 'a');
@@ -60,20 +58,14 @@ void TestSerializingASplitAutomaton() {
   b.next->next->next = halfA;
   b.next->next->nextSplit = halfA;
   b.next->nextSplit->next = b.next->next->next;
-  T::okay(b.ToString() == "(Character 'a' (Split"
-      " (Character 'a' (Character 'c' (Character 'd' (Split"
-        " (Character 'e' (Match))"
-        " (Split (Character 'f' (Match)) (Character 'd' (Match)))))))"
-      " (Character 'b' (Character 'c' (Character 'd' (Split"
-        " (Character 'e' (Match))"
-        " (Split (Character 'f' (Match)) (Character 'd' (Match)))))))))",
-      "Serializes a more complex split");
+  T::okay(SerializationOK(b), "Serializes a more complex split");
 }
 
 int main() {
   std::cout << "Testing automaton serialization\n";
 
   TestSerializingALinearAutomaton();
+  TestSerializingASplitAutomaton();
 
   return 0;
 }

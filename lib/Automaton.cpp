@@ -108,8 +108,74 @@ std::string Automaton::ToString() const {
     case Match:
       serial += "Match";
       break;
+    case Invalid:
+      std::cout << "Error: Invalid char\n";
+      return "INVALID";
   }
 
   serial += ")";
   return serial;
+}
+
+std::string AutomatonTypeToString(AutomatonType t) {
+  switch (t) {
+    case Character: return "Character";
+    case Split: return "Split";
+    case Match: return "Match";
+    case Invalid:
+      std::cout << "Error: No such automaton type" << t << "\n";
+      return "INVALID";
+    default:
+      std::cout << "Error: No such automaton type" << t << "\n";
+      return "INVALID";
+  }
+}
+
+AutomatonType AutomatonTypeFromString(const std::string &str) {
+  if (str == "Character") {
+    return Character;
+  } else if (str == "Split") {
+    return Split;
+  } else if (str == "Match") {
+    return Match;
+  }
+
+  std::cout << "Error: No such automaton type" << str << "\n";
+  return Invalid;
+}
+
+nlohmann::json Automaton::ToJson() const {
+  nlohmann::json j;
+  j["type"] = AutomatonTypeToString(type);
+  j["symbol"] = symbol;
+  // TODO: Check for cycles if implementing Kleene star or other infinite
+  // automaton structs
+  if (next) {
+    j["next"] = next->ToJson();
+  }
+  if (nextSplit) {
+    j["nextSplit"] = nextSplit->ToJson();
+  }
+  return j;
+}
+
+void Automaton::FromJsonHelper(const nlohmann::json& j) {
+  type = AutomatonTypeFromString(j["type"]);
+  int symbolCode = j["symbol"];
+  symbol = static_cast<char>(symbolCode);
+  if (j.find("next") != j.end()) {
+    auto nextA = std::make_shared<Automaton>();
+    nextA->FromJsonHelper(j["next"]);
+    next = nextA;
+  }
+  if (j.find("nextSplit") != j.end()) {
+    auto nextA = std::make_shared<Automaton>();
+    nextA->FromJsonHelper(j["nextSplit"]);
+    nextSplit = nextA;
+  }
+}
+
+void Automaton::FromJson(const std::string& str) {
+  nlohmann::json j = nlohmann::json::parse(str);
+  FromJsonHelper(j);
 }

@@ -37,7 +37,7 @@ void AutomataStorage::SaveAutomaton(size_t id, const std::string &filename) cons
   if (automaton) {
     // TODO: Check if the file was open successfully
     std::ofstream saveFile(filename);
-    saveFile << automaton->ToString();
+    saveFile << automaton->ToJson();
     return;
   }
 
@@ -46,6 +46,10 @@ void AutomataStorage::SaveAutomaton(size_t id, const std::string &filename) cons
 }
 
 size_t AutomataStorage::LoadAutomaton(const std::string &filename) {
-  std::cout << filename;
-  return 0;
+  auto a = std::make_shared<Automaton>();
+  std::ifstream loadFile(filename);
+  std::string serial;
+  loadFile >> serial;
+  a->FromJson(serial);
+  return Add(a);
 }

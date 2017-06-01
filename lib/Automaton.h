@@ -2,13 +2,17 @@
 
 #include <memory>
 #include <vector>
+#include "json.hpp"
 
 
 enum AutomatonType {
-  Character, Split, Match
+  Character, Split, Match, Invalid = -1
 };
 
+
+class AutomataStorage;
 class Automaton;
+
 // TODO: Consider using weak_ptr because of possible circular deps
 typedef std::shared_ptr<Automaton> AutomatonPtr;
 typedef std::shared_ptr<const Automaton> AutomatonConstPtr;
@@ -36,6 +40,8 @@ class Automaton {
 
     void AddState(AutomatonConstPtr, StatesList&) const;
 
+    void FromJsonHelper(const nlohmann::json&);
+
   public:
     Automaton()
       : type(Match), symbol('\0'), next(nullptr), nextSplit(nullptr) {}
@@ -44,6 +50,8 @@ class Automaton {
 
     // Used for debugging purposes
     std::string ToString() const;
+    nlohmann::json ToJson() const;
+    void FromJson(const std::string&);
 
     bool IsEmpty() const;
     bool IsDeterministic() const;

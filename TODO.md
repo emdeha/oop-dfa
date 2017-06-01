@@ -42,3 +42,7 @@
   id
 
 5. Implement interactive console
+
+6. Polishing
+  - Implement an error-handling mechanism
+  - Fix all possible cycles in the automaton
