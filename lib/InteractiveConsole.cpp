@@ -47,6 +47,13 @@ void InteractiveConsole::Loop() {
       continue;
     }
 
+    if (!cmd->isMain && !canAcceptOtherCommands) {
+      std::cout << "You must call Open before being able to accept other "
+                   "commnds than the Main ones\n";
+      std::cout << "Check Help to see which commands are the Main\n";
+      continue;
+    }
+
     try {
       cmd->command(cmdArgs);
     } catch (const std::exception &e) {
@@ -74,6 +81,9 @@ void InteractiveConsole::SetMainCommands(const std::vector<std::string> &cmdName
 void InteractiveConsole::ListCommands() const {
   std::cout << "Available commands:\n";
   for (auto &c: commands) {
+    if (c.isMain) {
+      std::cout << "  [Main]"; 
+    }
     std::cout << "  " << c.name << " " << c.numArgs << "\n";
   }
 }

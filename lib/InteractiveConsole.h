@@ -27,7 +27,7 @@ class InteractiveConsole {
 
 	public:
     InteractiveConsole()
-      : isRunning(true) {}
+      : canAcceptOtherCommands(false), isRunning(true) {}
 
     void AcceptOtherCommands(const std::string&);
     void StopAcceptingOtherCommands();

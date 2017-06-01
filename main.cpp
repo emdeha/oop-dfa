@@ -16,6 +16,7 @@ int main()
   // Main commands
   ic.AddCommand("Open", 1, [&ic, &as](ArgVector args) {
     auto filename = args[0];
+    std::cout << "Loading automaton from " << filename << "\n";
     as.LoadAutomaton(filename);
     ic.AcceptOtherCommands(filename);
   });
@@ -26,7 +27,11 @@ int main()
     auto id = args[0];
     size_t properId = InteractiveConsole::ArgToSizeT(id);
     auto filename = ic.GetCurrentFile();
-    as.SaveAutomaton(properId, filename);
+    if (filename.size() > 0) {
+      as.SaveAutomaton(properId, filename);
+    } else {
+      std::cout << "No file opened\n";
+    }
   });
   ic.AddCommand("SaveAs", 2, [&as](ArgVector args) {
     auto id = args[0];
@@ -40,15 +45,26 @@ int main()
   ic.AddCommand("Help", 0, [&ic](ArgVector) {
     ic.ListCommands();
   });
-  ic.SetMainCommands({ "Open", "Close", "Save", "SaveAs", "Exit" });
+  ic.SetMainCommands({ "Open", "Close", "Save", "SaveAs", "Exit", "Help" });
+
+  // Project-specific commands
+  ic.AddCommand("List", 0, [&as](ArgVector) {
+    auto indexes = as.List();
+    if (indexes.size() <= 0) {
+      std::cout << "No automatons\n";
+      return;
+    }
+
+    std::cout << "Automatons with indexes: ";
+    for (auto i: indexes) {
+      std::cout << i;
+    }
+    std::cout << "\n";
+  });
 
   ic.Loop();
 
   /*
-  // Project-specific commands
-  ic.AddCommand("List", 0, [&as](ArgVector) {
-    as.List();
-  });
   ic.AddCommand("Print", 1, [&as](ArgVector args) {
     auto id = args[0];
     size_t properId = InteractiveConsole::ArgToSizeT(id);

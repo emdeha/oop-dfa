@@ -5,6 +5,7 @@
 #include <fstream>
 #include <limits>
 #include <cassert>
+#include <streambuf>
 
 
 size_t AutomataStorage::Add(std::shared_ptr<Automaton> automatonToAdd) {
@@ -48,8 +49,8 @@ void AutomataStorage::SaveAutomaton(size_t id, const std::string &filename) cons
 size_t AutomataStorage::LoadAutomaton(const std::string &filename) {
   auto a = std::make_shared<Automaton>();
   std::ifstream loadFile(filename);
-  std::string serial;
-  loadFile >> serial;
+  std::string serial((std::istreambuf_iterator<char>(loadFile)),
+                      std::istreambuf_iterator<char>());
   a->FromJson(serial);
   return Add(a);
 }
