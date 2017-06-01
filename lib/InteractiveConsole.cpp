@@ -12,6 +12,7 @@ void InteractiveConsole::AcceptOtherCommands(const std::string &filename) {
 }
 void InteractiveConsole::StopAcceptingOtherCommands() {
   canAcceptOtherCommands = false;
+  currentlyOpenFilename = "";
 }
 
 void InteractiveConsole::Stop() {
@@ -46,7 +47,12 @@ void InteractiveConsole::Loop() {
       continue;
     }
 
-    std::cout << "Called a command with " << cmd->numArgs << " args\n";
+    try {
+      cmd->command(cmdArgs);
+    } catch (const std::exception &e) {
+      std::cout << "Failed with exception [" << e.what() << "]\n";
+    }
+    std::cout << "Executed a command with " << cmd->numArgs << " args\n";
   }
 }
 
