@@ -2,7 +2,6 @@
 
 #include <vector>
 #include <functional>
-#include <iostream>
 
 
 typedef std::function<void(std::vector<std::string>)> CommandType;
@@ -27,6 +26,9 @@ class InteractiveConsole {
     bool isRunning;
 
 	public:
+    InteractiveConsole()
+      : isRunning(true) {}
+
     void AcceptOtherCommands(const std::string&);
     void StopAcceptingOtherCommands();
     void Stop();

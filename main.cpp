@@ -28,7 +28,7 @@ int main()
     auto filename = ic.GetCurrentFile();
     as.SaveAutomaton(properId, filename);
   });
-  ic.AddCommand("Save As", 2, [&as](ArgVector args) {
+  ic.AddCommand("SaveAs", 2, [&as](ArgVector args) {
     auto id = args[0];
     auto filename = args[1];
     size_t properId = InteractiveConsole::ArgToSizeT(id);
@@ -40,8 +40,11 @@ int main()
   ic.AddCommand("Help", 0, [&ic](ArgVector) {
     ic.ListCommands();
   });
-  ic.SetMainCommands({ "Open", "Close", "Save", "Save As", "Exit" });
+  ic.SetMainCommands({ "Open", "Close", "Save", "SaveAs", "Exit" });
 
+  ic.Loop();
+
+  /*
   // Project-specific commands
   ic.AddCommand("List", 0, [&as](ArgVector) {
     as.List();
@@ -74,6 +77,7 @@ int main()
 
   // Run the interactive console
   ic.Loop();
+  */
   
   return 0;
 }

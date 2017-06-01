@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <cstdio>
+#include <sstream>
 // TODO: It's not a good practice to output stuff to stdout from libs
 #include <iostream>
 
@@ -18,7 +19,34 @@ void InteractiveConsole::Stop() {
 }
 
 void InteractiveConsole::Loop() {
+  std::cout << "DFA 0.0.0\n";
+
+  std::string cmdLine;
   while (isRunning) {
+    std::cout << "\\> ";
+    std::string cmdName;
+    std::vector<std::string> cmdArgs;
+    std::cin >> cmdName;
+    while (!std::cin.eof() && std::cin.peek() != '\n') {
+      std::string arg;
+      std::cin >> arg;
+      cmdArgs.push_back(arg);
+    }
+
+    auto cmd = std::find_if(commands.begin(), commands.end(), [&cmdName](Command &cmd)
+        { return cmd.name == cmdName; });
+    if (cmd == commands.end()) {
+      std::cout << "No such command\n";
+      continue;
+    }
+
+    if (cmdArgs.size() != cmd->numArgs) {
+      std::cout << "Expecting " << cmd->numArgs << " arguments; "
+                <<  cmdArgs.size() << " passed\n";
+      continue;
+    }
+
+    std::cout << "Called a command with " << cmd->numArgs << " args\n";
   }
 }
 
