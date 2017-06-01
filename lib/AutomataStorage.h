@@ -17,11 +17,12 @@ class AutomataStorage {
     size_t currentIdentifier;
 
     size_t Add(std::shared_ptr<Automaton> automatonToAdd);
-    std::shared_ptr<const Automaton> Retrieve(size_t) const;
 
   public:
     std::vector<size_t> List() const;
 
     void SaveAutomaton(size_t, const std::string&) const;
     size_t LoadAutomaton(const std::string&);
+
+    std::shared_ptr<const Automaton> Retrieve(size_t) const;
 };
