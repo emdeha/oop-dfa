@@ -37,10 +37,15 @@ void AutomataStorage::SaveAutomaton(size_t id, const std::string &filename) cons
   if (automaton) {
     // TODO: Check if the file was open successfully
     std::ofstream saveFile(filename);
-    saveFile << automaton->ToSerial();
+    saveFile << automaton->ToString();
     return;
   }
 
   // TODO: Maybe it's not a good idea for a library to use stdout
   std::cout << "No automaton specified by the given id\n";
+}
+
+size_t AutomataStorage::LoadAutomaton(const std::string &filename) {
+  std::cout << filename;
+  return 0;
 }

@@ -23,5 +23,5 @@ class AutomataStorage {
     std::vector<size_t> List() const;
 
     void SaveAutomaton(size_t, const std::string&) const;
-    void LoadAutomaton(const std::string&);
+    size_t LoadAutomaton(const std::string&);
 };

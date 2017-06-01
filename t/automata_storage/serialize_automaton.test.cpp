@@ -6,23 +6,29 @@
 #include "../../lib/AutomataStorage.h"
 
 
+bool SerializationOK(const Automaton &a) {
+  AutomataStorage as;
+
+  size_t id = as.Add(std::make_shared<Automaton>(a));
+  as.SaveAutomaton(id, "./test.dfa");
+  size_t loadedId = as.LoadAutomaton("./test.dfa");
+  auto loadedAutomaton = as.Retrieve(loadedId);
+
+  return a.ToString() == loadedAutomaton->ToString();
+}
+
 void TestSerializingALinearAutomaton() {
   Automaton a(Match, '\0');
-  T::okay(a.ToSerial() == "(Match)",
-      "Serializes a match");
+  T::okay(SerializationOK(a), "Serializes a match");
 
   Automaton b(Character, 'a');
-  T::okay(b.ToSerial() == "(Character 'a')",
-      "Serializes a character");
+  T::okay(SerializationOK(b), "Serializes a character");
   b.next = std::make_shared<Automaton>(Character, 'b');
-  T::okay(b.ToSerial() == "(Character 'a' (Character 'b'))",
-      "Serializes two characters");
+  T::okay(SerializationOK(b), "Serializes two characters");
   b.next->next = std::make_shared<Automaton>(Match, '\0');
-  T::okay(b.ToSerial() == "(Character 'a' (Character 'b' (Match)))",
-      "Serializes two characters followed by a match");
+  T::okay(SerializationOK(b), "Serializes two characters followed by a match");
   b.next->next->next = std::make_shared<Automaton>(Character, 'c');
-  T::okay(b.ToSerial() == "(Character 'a' (Character 'b' (Match)))",
-      "Ignores Character after a Match.");
+  T::okay(SerializationOK(b), "Ignores Character after a Match.");
 }
 
 void TestSerializingASplitAutomaton() {
@@ -32,7 +38,7 @@ void TestSerializingASplitAutomaton() {
   a.next->next->next = std::make_shared<Automaton>(Match, '\0');
   a.next->nextSplit = std::make_shared<Automaton>(Character, 'c');
   a.next->nextSplit->next = std::make_shared<Automaton>(Match, '\0');
-  T::okay(a.ToSerial() == "(Character 'a' "
+  T::okay(a.ToString() == "(Character 'a' "
                           "(Split (Character 'b' (Match)) (Character 'c' (Match))))",
       "Serializes a simple split");
 
@@ -54,7 +60,7 @@ void TestSerializingASplitAutomaton() {
   b.next->next->next = halfA;
   b.next->next->nextSplit = halfA;
   b.next->nextSplit->next = b.next->next->next;
-  T::okay(b.ToSerial() == "(Character 'a' (Split"
+  T::okay(b.ToString() == "(Character 'a' (Split"
       " (Character 'a' (Character 'c' (Character 'd' (Split"
         " (Character 'e' (Match))"
         " (Split (Character 'f' (Match)) (Character 'd' (Match)))))))"
@@ -64,41 +70,10 @@ void TestSerializingASplitAutomaton() {
       "Serializes a more complex split");
 }
 
-void TestDeserializingLinearAutomaton() {
-  Automaton a;
-  a.FromSerial("(Match)");
-  T::okay(a.type == Match && !a.next,
-      "Deserilizes a Match");
-  a.FromSerial("(Match (Character 'a'))");
-  T::okay(a.type == Match && !a.next,
-      "Deserializes a Match, ignoring inner expressions");
-  a.FromSerial("(Character 'a')");
-  T::okay(a.type == Character && a.symbol == 'a' && !a.next,
-      "Deserializes a single Character");
-  a.FromSerial("(Character 'b' (Match))");
-  T::okay(a.type == Character && a.symbol == 'a' && a.next &&
-          a.next->type == Match && !a.next->next,
-      "Deserializes a single Character with a Match");
-  a.FromSerial("(Character 'a' ())");
-  T::okay(a.type == Character && a.symbol == 'a' && !a.next,
-      "Ignores empty expression for serialization");
-  a.FromSerial("(Character 'a' (Character 'b' (Character 'c' (Match))))");
-  T::okay(a.type == Character && a.symbol == 'a' && a.next &&
-        a.next->type == Character && a.next->symbol == 'b' && a.next->next &&
-        a.next->next->type == Character && a.next->next->symbol == 'c' && a.next->next->next &&
-        a.next->next->next->type == Match && !a.next->next->next->next,
-      "Deserializes a linear automaton");
-}
-
 int main() {
   std::cout << "Testing automaton serialization\n";
 
-  std::cout << "  Saving to serial string\n";
   TestSerializingALinearAutomaton();
-  TestSerializingASplitAutomaton();
-
-  std::cout << "  Creation from serial string\n";
-  TestDeserializingLinearAutomaton();
 
   return 0;
 }
