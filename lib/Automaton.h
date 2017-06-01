@@ -30,18 +30,6 @@ class Automaton {
     AutomatonPtr next;
     AutomatonPtr nextSplit;
 
-    /*
-     * We use an S-expression grammar to store the Automaton.
-     * automaton ::= '(' <character> | <split> | <match> ')'
-     * character ::= "Character" <char> <automaton>
-     * char ::= [a-z0-9]
-     * split ::= "Split" <automaton> <automaton>
-     * match ::= "Match"
-     */
-    void Parse(std::string, int);
-    AutomatonPtr ParseCharacter(std::string, int);
-    AutomatonPair ParseSplit(std::string, int);
-
     // These lists are used by the matching algorithm
     mutable StatesList currentStates;
     mutable StatesList nextStates;
@@ -54,8 +42,8 @@ class Automaton {
     Automaton(AutomatonType _type, char _symbol)
       : type(_type), symbol(_symbol), next(nullptr), nextSplit(nullptr) {}
 
-    std::string ToSerial() const;
-    void FromSerial(std::string);
+    // Used for debugging purposes
+    std::string ToString() const;
 
     bool IsEmpty() const;
     bool IsDeterministic() const;

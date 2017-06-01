@@ -2,6 +2,7 @@
 #include "Automaton.h"
 
 #include <iostream>
+#include <fstream>
 #include <limits>
 #include <cassert>
 
@@ -29,4 +30,17 @@ std::vector<size_t> AutomataStorage::List() const {
     automataIndexes.push_back(a.first);
   }
   return automataIndexes;
+}
+
+void AutomataStorage::SaveAutomaton(size_t id, const std::string &filename) const {
+  auto automaton = Retrieve(id);
+  if (automaton) {
+    // TODO: Check if the file was open successfully
+    std::ofstream saveFile(filename);
+    saveFile << automaton->ToSerial();
+    return;
+  }
+
+  // TODO: Maybe it's not a good idea for a library to use stdout
+  std::cout << "No automaton specified by the given id\n";
 }

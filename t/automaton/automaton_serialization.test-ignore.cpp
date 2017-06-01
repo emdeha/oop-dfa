@@ -63,6 +63,32 @@ void TestSerializingASplitAutomaton() {
       "Serializes a more complex split");
 }
 
+void TestDeserializingLinearAutomaton() {
+  Automaton a;
+  a.FromSerial("(Match)");
+  T::okay(a.type == Match && !a.next,
+      "Deserilizes a Match");
+  a.FromSerial("(Match (Character 'a'))");
+  T::okay(a.type == Match && !a.next,
+      "Deserializes a Match, ignoring inner expressions");
+  a.FromSerial("(Character 'a')");
+  T::okay(a.type == Character && a.symbol == 'a' && !a.next,
+      "Deserializes a single Character");
+  a.FromSerial("(Character 'b' (Match))");
+  T::okay(a.type == Character && a.symbol == 'a' && a.next &&
+          a.next->type == Match && !a.next->next,
+      "Deserializes a single Character with a Match");
+  a.FromSerial("(Character 'a' ())");
+  T::okay(a.type == Character && a.symbol == 'a' && !a.next,
+      "Ignores empty expression for serialization");
+  a.FromSerial("(Character 'a' (Character 'b' (Character 'c' (Match))))");
+  T::okay(a.type == Character && a.symbol == 'a' && a.next &&
+        a.next->type == Character && a.next->symbol == 'b' && a.next->next &&
+        a.next->next->type == Character && a.next->next->symbol == 'c' && a.next->next->next &&
+        a.next->next->next->type == Match && !a.next->next->next->next,
+      "Deserializes a linear automaton");
+}
+
 int main() {
   std::cout << "Testing automaton serialization\n";
 
@@ -71,6 +97,7 @@ int main() {
   TestSerializingASplitAutomaton();
 
   std::cout << "  Creation from serial string\n";
+  TestDeserializingLinearAutomaton();
 
   return 0;
 }
