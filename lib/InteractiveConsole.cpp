@@ -59,7 +59,6 @@ void InteractiveConsole::Loop() {
     } catch (const std::exception &e) {
       std::cout << "Failed with exception [" << e.what() << "]\n";
     }
-    std::cout << "Executed a command with " << cmd->numArgs << " args\n";
   }
 }
 

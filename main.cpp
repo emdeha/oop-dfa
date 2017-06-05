@@ -62,27 +62,27 @@ int main()
     std::cout << "\n";
   });
 
-  ic.Loop();
-
-  /*
   ic.AddCommand("Print", 1, [&as](ArgVector args) {
     auto id = args[0];
     size_t properId = InteractiveConsole::ArgToSizeT(id);
     auto a = as.Retrieve(properId);
     std::cout << a->ToString() << "\n";
   });
+
   ic.AddCommand("Empty", 1, [&as](ArgVector args) {
     auto id = args[0];
     size_t properId = InteractiveConsole::ArgToSizeT(id);
     auto a = as.Retrieve(properId);
     std::cout << a->IsEmpty() << "\n";
   }); 
+
   ic.AddCommand("Deterministic", 1, [&as](ArgVector args) {
     auto id = args[0];
     size_t properId = InteractiveConsole::ArgToSizeT(id);
     auto a = as.Retrieve(properId);
     std::cout << a->IsDeterministic() << "\n";
   });
+
   ic.AddCommand("Recognize", 2, [&as](ArgVector args) {
     auto id = args[0];
     auto word = args[1];
@@ -93,7 +93,6 @@ int main()
 
   // Run the interactive console
   ic.Loop();
-  */
   
   return 0;
 }
