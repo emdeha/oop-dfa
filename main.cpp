@@ -16,7 +16,7 @@ int main()
   // Main commands
   ic.AddCommand("Open", 1, [&ic, &as](ArgVector args) {
     auto filename = args[0];
-    std::cout << "Loading automaton from " << filename << "\n";
+    std::cout << "Loading automaton from " << filename << '\n';
     as.LoadAutomaton(filename);
     ic.AcceptOtherCommands(filename);
   });
@@ -57,30 +57,30 @@ int main()
 
     std::cout << "Automatons with indexes: ";
     for (auto i: indexes) {
-      std::cout << i;
+      std::cout << i << ' ';
     }
-    std::cout << "\n";
+    std::cout << '\n';
   });
 
   ic.AddCommand("Print", 1, [&as](ArgVector args) {
     auto id = args[0];
     size_t properId = InteractiveConsole::ArgToSizeT(id);
     auto a = as.Retrieve(properId);
-    std::cout << a->ToString() << "\n";
+    std::cout << a->ToString() << '\n';
   });
 
   ic.AddCommand("Empty", 1, [&as](ArgVector args) {
     auto id = args[0];
     size_t properId = InteractiveConsole::ArgToSizeT(id);
     auto a = as.Retrieve(properId);
-    std::cout << a->IsEmpty() << "\n";
+    std::cout << a->IsEmpty() << '\n';
   }); 
 
   ic.AddCommand("Deterministic", 1, [&as](ArgVector args) {
     auto id = args[0];
     size_t properId = InteractiveConsole::ArgToSizeT(id);
     auto a = as.Retrieve(properId);
-    std::cout << a->IsDeterministic() << "\n";
+    std::cout << a->IsDeterministic() << '\n';
   });
 
   ic.AddCommand("Recognize", 2, [&as](ArgVector args) {
@@ -88,7 +88,13 @@ int main()
     auto word = args[1];
     size_t properId = InteractiveConsole::ArgToSizeT(id);
     auto a = as.Retrieve(properId);
-    std::cout << a->Recognize(word) << "\n";
+    std::cout << a->Recognize(word) << '\n';
+  });
+
+  ic.AddCommand("Concat", 2, [&as](ArgVector args) {
+    auto aId = InteractiveConsole::ArgToSizeT(args[0]);
+    auto bId = InteractiveConsole::ArgToSizeT(args[1]);
+    std::cout << "Concatenated automaton is with id: " << as.WithConcat(aId, bId) << '\n';
   });
 
   // Run the interactive console
