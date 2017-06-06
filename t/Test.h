@@ -6,9 +6,9 @@
 namespace T {
 void okay(bool test, std::string message) {
   if (test) {
-    std::cout << "    Check! " << message << "\n";
+    std::cout << "\033[32;2m   Check! \033[0m" << message << "\n";
   } else {
-    std::cout << "    Fail! " << message << "\n";
+    std::cout << "\033[31;2m    Fail! \033[0m" << message << "\n";
   }
 }
 }
