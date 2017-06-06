@@ -28,4 +28,6 @@ class AutomataStorage {
     size_t LoadAutomaton(const std::string&);
 
     std::shared_ptr<const Automaton> Retrieve(size_t) const;
+
+    size_t WithConcat(size_t, size_t);
 };

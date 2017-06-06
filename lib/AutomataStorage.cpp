@@ -54,3 +54,31 @@ size_t AutomataStorage::LoadAutomaton(const std::string &filename) {
   a->FromJson(serial);
   return Add(a);
 }
+
+size_t AutomataStorage::WithConcat(size_t aId, size_t bId) {
+  auto a = Retrieve(aId);
+  if (!a) {
+    std::cout << "No automaton with id: " << aId << '\n';
+    return 0;
+  }
+
+  auto b = Retrieve(bId);
+  if (!b) {
+    std::cout << "No automaton with id: " << bId << '\n';
+  }
+
+  auto c = std::make_shared<Automaton>();
+  if (a->type == Match) {
+    c->FromAutomaton(*b);
+    return Add(c);
+  }
+
+  c->FromAutomaton(*a);
+
+  auto cNext = std::make_shared<Automaton>();
+  cNext->FromAutomaton(*b);
+
+  c->ReplaceMatchingStates(cNext);
+
+  return Add(c);
+}

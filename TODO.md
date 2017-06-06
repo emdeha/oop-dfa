@@ -12,7 +12,7 @@ V Implement `AutomataStorage` serialization
   - `save` -- saves an automaton to a file, given its id
 
 4. Implement `AutomataStorage` automata operations
-  - `withConcat` -- given two automata ids, concatenates the two automata
+  V `withConcat` -- given two automata ids, concatenates the two automata
   in a new automaton; returns the automaton id
   - `withUnion` -- given two automata ids, unions the two automata in a new
   automaton; returns the automaton id
@@ -21,7 +21,7 @@ V Implement `AutomataStorage` serialization
   - `fromRegex` -- creates an automaton from a regular expression; returns its
   id
 
-5. Implement interactive console
+V Implement interactive console
 
 6. Polishing
   - Implement an error-handling mechanism

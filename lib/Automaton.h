@@ -29,6 +29,8 @@ class Automaton {
 #else
   public:
 #endif
+    friend AutomataStorage;
+
     AutomatonType type;
     char symbol;
     AutomatonPtr next;
@@ -41,6 +43,9 @@ class Automaton {
     void AddState(AutomatonConstPtr, StatesList&) const;
 
     void FromJsonHelper(const nlohmann::json&);
+
+    void FromAutomaton(const Automaton&);
+    void ReplaceMatchingStates(AutomatonPtr);
 
   public:
     Automaton()

@@ -179,3 +179,35 @@ void Automaton::FromJson(const std::string& str) {
   nlohmann::json j = nlohmann::json::parse(str);
   FromJsonHelper(j);
 }
+
+void Automaton::FromAutomaton(const Automaton &a) {
+  type = a.type;
+  symbol = a.symbol;
+  if (a.next) {
+    next = std::make_shared<Automaton>();
+    next->FromAutomaton(*a.next);
+  }
+
+  if (a.nextSplit) {
+    nextSplit = std::make_shared<Automaton>();
+    nextSplit->FromAutomaton(*a.nextSplit);
+  }
+}
+
+void Automaton::ReplaceMatchingStates(AutomatonPtr a) {
+  if (type == Match) {
+    type = a->type;
+    symbol = a->symbol;
+    next = a->next;
+    nextSplit = a->nextSplit;
+    return;
+  }
+
+  if (next) {
+    next->ReplaceMatchingStates(a);
+  }
+
+  if (nextSplit) {
+    nextSplit->ReplaceMatchingStates(a);
+  }
+}
